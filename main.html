@@ -1,51 +1,81 @@
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
-		<!-- bootstrap here -->
 		<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" rel="stylesheet">
 		<link href="style.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
-		<script src="https://momentjs.com/downloads/moment.js"></script>
+		<script src="https://momentjs.com/downloads/moment.min.js"></script>
 		<script src="script.js"></script>
-		<title></title>
+		<title>CALENDARIO</title>
 	</head>
 	<body>
 		<div class="container">
 			<div class="header">
-				<div class="prev_month">
-					<i class="fas fa-caret-left"></i>
-					<span>Precedente</span>
+				<div class="header_left">
+					<div class="prev_month">
+						<i class="fas fa-caret-left"></i>
+						<span>Mese Precedente</span>
+					</div>
+					<div class="current_month">
+						<span></span>
+					</div>
+					<div class="next_month">
+						<span>Mese Successivo</span>
+						<i class="fas fa-caret-right"></i>
+					</div>
 				</div>
-				<div class="current_month">
-					<span>Gennaio 2017</span>
-				</div>
-        <div class="next_month">
-          <span>Successivo</span>
-          <i class="fas fa-caret-right"></i>
-        </div>
-				<div class="current_nation">
-					<span>Nazione:</span>
-					<select class="countries" id="" name=""></select>
-					<script id="dropdown_template" type="text/x-handlebars-template">
-						<option value="{{countryCode}}" {{check_selected countryName}}>{{countryName}}</option>
-					</script>
+				<div class="header_right">
+					<div class="current_nation">
+						<span>Nazione:</span>
+						<select class="countries" id="" name=""></select>
+						<script id="dropdown_template" type="text/x-handlebars-template">
+							{{#each countriesList}}
+							{{#ifMyCountry countryName}}
+								<option value="{{countryCode}}" selected="selected">{{countryName}}</option>
+							{{else}}
+								<option value="{{countryCode}}">{{countryName}}</option>
+							{{/ifMyCountry}}
+							{{/each}}
+						</script>
+					</div>
 				</div>
 			</div>
-			<div class="days">
+			<div class="days_labels">
 				<ul>
-					<li>lunedì</li>
-					<li>martedi</li>
-					<li>mercoledi</li>
-					<li>giovedi</li>
-					<li>venerdi</li>
-					<li>sabato</li>
-					<li>domenica</li>
+					<li>Lunedì</li>
+					<li>Martedì</li>
+					<li>Mercoledì</li>
+					<li>Giovedì</li>
+					<li>Venerdì</li>
+					<li>Sabato</li>
+					<li>Domenica</li>
 				</ul>
 			</div>
+			<div class="content"></div>
+			<script id="list_template" type="text/x-handlebars-template">
+				{{#each daysList}}
+				{{#if other_month}}
+				<div class="day_cell other_month">
+					<span class="month_day">{{weekday_string_format}}</span>
+				</div>
+				{{else}}
+				{{#if holiday.isHoliday}}
+				<div class="day_cell holiday">
+					<span class="month_day">{{weekday_string_format}}</span>
+					<span class="holiday_name">{{holiday.holiday_name}}</span>
+				</div>
+				{{else}}
+				<div class="day_cell">
+					<span class="month_day">{{weekday_string_format}}</span>
+				</div>
+				{{/if}}
+				{{/if}}
+				{{/each}}
+			</script>
+			<div class="alert_message"></div>
 		</div>
 	</body>
 </html>
